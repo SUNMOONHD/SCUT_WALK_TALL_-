@@ -2,6 +2,7 @@
 build/
 out/
 cmake-build-*/
+dist/
 
 # VS / IDE
 .vs/
@@ -30,5 +31,13 @@ Desktop.ini
 *.rar
 *.7z
 
+# Logs
+*.log
+
 # Third-party: keep source/headers, ignore compiled libs
 third_party/SFML/lib/*.lib
+
+# ImGui examples (large, not needed for project)
+third_party/imgui/examples/
+third_party/imgui/misc/fonts/
+third_party/imgui/misc/freetype/
