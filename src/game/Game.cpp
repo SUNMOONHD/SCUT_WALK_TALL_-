@@ -880,10 +880,17 @@ void Game::renderMainUI() {
 // ======================
 void Game::renderSettingsPanel() {
     float s = m_uiScale;
+    const float winW = (float)m_window.getSize().x;
+    const float winH = (float)m_window.getSize().y;
 
-    // 设置面板：放在右上角
-    ImGui::SetNextWindowPos({ 935 * s, 25 * s });
-    ImGui::SetNextWindowSize({ 320 * s, 400 * s });
+    // 设置面板：放在右上角，动态计算位置
+    const float panelW = 320 * s;
+    const float panelH = std::min(400 * s, winH * 0.7f);
+    const float panelX = winW - panelW - 40 * s;  // 右侧40px边距
+    const float panelY = 25 * s;
+
+    ImGui::SetNextWindowPos({ panelX, panelY });
+    ImGui::SetNextWindowSize({ panelW, panelH });
     ImGui::Begin("SettingsPanel", &m_showSettingsPanel,
         ImGuiWindowFlags_NoTitleBar |
         ImGuiWindowFlags_NoResize |
