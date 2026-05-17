@@ -1,4 +1,4 @@
-﻿#include "Game.h"
+#include "Game.h"
 #include "map/Map.h"
 #include <algorithm>
 #include <cmath>
@@ -44,7 +44,7 @@ Game::Game()
     }
 
     if (m_menuBgTexture.loadFromFile("assets/sprites/ui/main_menu_bg.png")) {
-        m_menuBgTexture.setSmooth(false);   // 像素风格关闭平滑
+        m_menuBgTexture.setSmooth(true);   // 开启纹理平滑提高清晰度
         m_menuBgSprite.emplace(m_menuBgTexture);
         m_textureLoaded = true;
     }
@@ -1075,11 +1075,11 @@ void Game::enterGameplay() {
     // ── 角色精灵图加载 ──
     std::string charPrefix = (m_selectedCharIdx == 0) ? "cs" : "chem";
     m_charDown.loadFromFile("assets/sprites/characters/" + charPrefix + "_walk_down.png");
-    m_charDown.setSmooth(false);
+    m_charDown.setSmooth(true);
     m_charUp.loadFromFile("assets/sprites/characters/" + charPrefix + "_walk_up.png");
-    m_charUp.setSmooth(false);
+    m_charUp.setSmooth(true);
     m_charLeft.loadFromFile("assets/sprites/characters/" + charPrefix + "_walk_left.png");
-    m_charLeft.setSmooth(false);
+    m_charLeft.setSmooth(true);
     // 侧面素材常有大量半透明边缘像素导致可见线条，裁剪掉低透明度像素
     {
         sf::Image img = m_charLeft.copyToImage();
@@ -1096,7 +1096,7 @@ void Game::enterGameplay() {
     // 尝试加载右向图，失败则标记
     bool hasRight = m_charRight.loadFromFile("assets/sprites/characters/" + charPrefix + "_walk_right.png");
     if (hasRight) {
-        m_charRight.setSmooth(false);
+        m_charRight.setSmooth(true);
         // 同样裁剪侧面素材的半透明边缘
         sf::Image img = m_charRight.copyToImage();
         for (unsigned int y = 0; y < img.getSize().y; ++y)
@@ -1163,11 +1163,11 @@ void Game::enterGameplay() {
 
     // ── 道具系统初始化 ──
     m_healItemLoaded  = m_healItemTexture.loadFromFile("assets/sprites/items/item_heal.png");
-    m_healItemTexture.setSmooth(false);
+    m_healItemTexture.setSmooth(true);
     m_speedItemLoaded = m_speedItemTexture.loadFromFile("assets/sprites/items/item_speed.png");
-    m_speedItemTexture.setSmooth(false);
+    m_speedItemTexture.setSmooth(true);
     m_expItemLoaded   = m_expItemTexture.loadFromFile("assets/sprites/items/item_exp.png");
-    m_expItemTexture.setSmooth(false);
+    m_expItemTexture.setSmooth(true);
     m_pickupSpawnTimer = 0.0f;
     m_nextSpawnInterval = 7.5f + std::rand() % 750 / 100.0f; // 7.5 ~ 15.0
     m_speedBuffTimer = 0.0f;
@@ -2046,8 +2046,8 @@ void Game::initEnemies() {
     m_dashEnemyTexLoaded  = m_dashEnemyTexLeft.loadFromFile("assets/sprites/enemies/server_left.png");
     m_dashEnemyTexLoaded &= m_dashEnemyTexRight.loadFromFile("assets/sprites/enemies/server_right.png");
     if (m_dashEnemyTexLoaded) {
-        m_dashEnemyTexLeft.setSmooth(false);
-        m_dashEnemyTexRight.setSmooth(false);
+        m_dashEnemyTexLeft.setSmooth(true);
+        m_dashEnemyTexRight.setSmooth(true);
     }
 
     if (!m_dashEnemyTexLoaded) {
@@ -2055,7 +2055,7 @@ void Game::initEnemies() {
         auto makeFallback = [](sf::Texture& tex, sf::Color col) {
             sf::Image img(sf::Vector2u(40u, 64u), col);
             tex.loadFromImage(img);
-            tex.setSmooth(false);
+            tex.setSmooth(true);
         };
         makeFallback(m_dashEnemyTexLeft,  sf::Color(60, 60, 80, 255));
         makeFallback(m_dashEnemyTexRight, sf::Color(60, 60, 80, 255));
@@ -2066,15 +2066,15 @@ void Game::initEnemies() {
     m_bsodTexLoaded  = m_bsodTexLeft.loadFromFile("assets/sprites/enemies/bluescreen_left.png");
     m_bsodTexLoaded &= m_bsodTexRight.loadFromFile("assets/sprites/enemies/bluescreen_right.png");
     if (m_bsodTexLoaded) {
-        m_bsodTexLeft.setSmooth(false);
-        m_bsodTexRight.setSmooth(false);
+        m_bsodTexLeft.setSmooth(true);
+        m_bsodTexRight.setSmooth(true);
     }
 
     if (!m_bsodTexLoaded) {
         auto makeFallback = [](sf::Texture& tex, sf::Color col) {
             sf::Image img(sf::Vector2u(64u, 52u), col);
             tex.loadFromImage(img);
-            tex.setSmooth(false);
+            tex.setSmooth(true);
         };
         makeFallback(m_bsodTexLeft,  sf::Color(0, 120, 215, 255));
         makeFallback(m_bsodTexRight, sf::Color(0, 120, 215, 255));
@@ -2085,8 +2085,8 @@ void Game::initEnemies() {
     m_thiefTexLoaded  = m_thiefTexLeft.loadFromFile("assets/sprites/enemies/steal_thief_left.png");
     m_thiefTexLoaded &= m_thiefTexRight.loadFromFile("assets/sprites/enemies/steal_thief_right.png");
     if (m_thiefTexLoaded) {
-        m_thiefTexLeft.setSmooth(false);
-        m_thiefTexRight.setSmooth(false);
+        m_thiefTexLeft.setSmooth(true);
+        m_thiefTexRight.setSmooth(true);
     }
 
     if (!m_thiefTexLoaded) {
@@ -2094,7 +2094,7 @@ void Game::initEnemies() {
         auto makeFallback = [](sf::Texture& tex, sf::Color col) {
             sf::Image img(sf::Vector2u(64u, 64u), col);
             tex.loadFromImage(img);
-            tex.setSmooth(false);
+            tex.setSmooth(true);
         };
         makeFallback(m_thiefTexLeft,  sf::Color(50, 50, 60, 255));
         makeFallback(m_thiefTexRight, sf::Color(50, 50, 60, 255));

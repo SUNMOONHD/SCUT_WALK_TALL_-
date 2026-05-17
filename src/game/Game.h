@@ -48,8 +48,8 @@ enum class BGMType {
 // 用于显示伤害数字、经验获取等临时信息
 // ============================================================
 struct FloatText {
-    std::string text;       // 显示文本
-    sf::Vector2f pos;       // 世界坐标位置
+    std::string text;      // 显示文本
+    sf::Vector2f pos;      // 世界坐标位置
     float        life     = 1.5f;   // 存活时间（秒）
     float        elapsed  = 0.f;    // 已经过的时间
     sf::Color    color    = sf::Color(220, 50, 50, 255);  // 默认红色
@@ -128,8 +128,8 @@ private:
     void updateBGMVolume();
 
 private:
-    static constexpr unsigned int DesignWidth  = 1280;
-    static constexpr unsigned int DesignHeight = 720;
+    static constexpr unsigned int DesignWidth  = 1920;
+    static constexpr unsigned int DesignHeight = 1080;
     static constexpr int TILE_RENDER_SIZE = 32;
 
     sf::RenderWindow  m_window;
@@ -205,7 +205,7 @@ private:
     sf::FloatRect      m_charCollisionBox;
     float              m_spriteOffsetX = 0.f; // 精灵相对 m_playerPos 的水平偏移（居中）
     float              m_spriteOffsetY = 0.f; // 精灵相对 m_playerPos 的垂直偏移（向上）
-    float              m_charSpriteScale = 0.25f; // 角色精灵缩放
+    float              m_charSpriteScale = 0.4f; // 角色精灵缩放
     sf::Vector2f       m_playerPos;
     float              m_playerSpeed;
     sf::View           m_camera;
