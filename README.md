@@ -138,7 +138,7 @@ MIT License - 详见 LICENSE 文件
 ## 📧 联系方式
 
 如有问题或建议，请通过以下方式联系：
-- GitHub Issues: [Issues](https://github.com/SUNMOONHD/SCUT_WALK_TALL-/issues)
+- GitHub Issues: D893028193@outlook.com
 
 ---
 
