@@ -41,3 +41,6 @@ third_party/SFML/lib/*.lib
 third_party/imgui/examples/
 third_party/imgui/misc/fonts/
 third_party/imgui/misc/freetype/
+
+# ImGui-SFML (embedded git repo)
+third_party/imgui-sfml/
