@@ -1305,6 +1305,15 @@ void Game::updateGameplay(float dt) {
     m_enemySpawnInterval = std::max(3.0f, 8.0f - m_gameTime / 30.0f);
     if (m_enemySpawnTimer >= m_enemySpawnInterval) {
         m_enemySpawnTimer = 0.0f;
+        // 敌人像素大小（用于碰撞检测）
+        const float DASH_SIZE   = 50.f;
+        const float BSOD_SIZE_W = 200.f;
+        const float BSOD_SIZE_H = 163.f;
+        const float THIEF_SIZE  = 64.f;
+        float tileW = static_cast<float>(m_gameMap->getTileWidth());
+        auto toTileCheckSize = [&](float pixelSize) -> float {
+            return std::ceil(pixelSize / tileW) + 1.f;
+        };
         // 每次刷新1~2只（游戏时间超过60s后刷2只）
         int count = (m_gameTime > 60.f) ? 2 : 1;
         for (int i = 0; i < count; ++i) {
@@ -1316,12 +1325,18 @@ void Game::updateGameplay(float dt) {
                 pos.x = std::clamp(pos.x, 0.f, mapPixelW - 32.f);
                 pos.y = std::clamp(pos.y, 0.f, mapPixelH - 32.f);
                 float rs = static_cast<float>(TILE_RENDER_SIZE) / m_gameMap->getTileWidth();
-                // 检测 3x3 tile 区域，确保敌人刷新位置不卡碰撞层
-                float checkW = (TILE_RENDER_SIZE * 3.f) / rs;
-                float checkH = (TILE_RENDER_SIZE * 3.f) / rs;
+                // 随机生成三种敌人，根据类型使用不同的碰撞检测范围
+                int roll = std::rand() % 3;
+                float checkW, checkH;
+                if (roll == 0) {
+                    checkW = checkH = toTileCheckSize(DASH_SIZE);
+                } else if (roll == 1) {
+                    checkW = toTileCheckSize(BSOD_SIZE_W);
+                    checkH = toTileCheckSize(BSOD_SIZE_H);
+                } else {
+                    checkW = checkH = toTileCheckSize(THIEF_SIZE);
+                }
                 if (!m_gameMap->isRectColliding(pos.x/rs, pos.y/rs, checkW, checkH)) {
-                    // 随机生成三种敌人（各33%），并应用当前难度系数
-                    int roll = std::rand() % 3;
                     if (roll == 0) {
                         auto enemy = std::make_unique<DashEnemy>(
                             pos, &m_dashEnemyTexLeft, &m_dashEnemyTexRight);
@@ -2118,6 +2133,35 @@ void Game::initEnemies() {
     float rs    = static_cast<float>(TILE_RENDER_SIZE) / m_gameMap->getTileWidth();
     float tileW = static_cast<float>(m_gameMap->getTileWidth());
 
+    // 敌人像素大小（用于碰撞检测）
+    const float DASH_SIZE  = 50.f;   // DashEnemy 约 50x80
+    const float BSOD_SIZE_W = 200.f; // BlueScreenEnemy 约 200x163
+    const float BSOD_SIZE_H = 163.f;
+    const float THIEF_SIZE = 64.f;   // ThiefEnemy 约 64x64
+
+    // 将敌人像素大小转换为 tile 单位（向上取整确保覆盖）
+    auto toTileCheckSize = [&](float pixelSize) -> float {
+        return std::ceil(pixelSize / tileW) + 1.f; // 加1 tile 边缘
+    };
+
+    const float dashCheck  = toTileCheckSize(DASH_SIZE);
+    const float bsodCheckW = toTileCheckSize(BSOD_SIZE_W);
+    const float bsodCheckH = toTileCheckSize(BSOD_SIZE_H);
+    const float thiefCheck = toTileCheckSize(THIEF_SIZE);
+
+    // 辅助函数：检测指定位置的敌人是否与碰撞层重叠
+    auto isSpawnPosColliding = [&](float x, float y, float checkW, float checkH) -> bool {
+        int tx = static_cast<int>(x / tileW);
+        int ty = static_cast<int>(y / tileW);
+        // 检测区域要比敌人稍大一点，确保完全覆盖
+        return m_gameMap->isRectColliding(
+            static_cast<float>(tx) - 0.5f,
+            static_cast<float>(ty) - 0.5f,
+            checkW + 1.f,
+            checkH + 1.f
+        );
+    };
+
     const int DASH_COUNT = 3;
     const int BSOD_COUNT = 3;
     int attempts = 0;
@@ -2129,11 +2173,7 @@ void Game::initEnemies() {
         ++attempts;
         float x = static_cast<float>(std::rand() % static_cast<int>(mapW - 64));
         float y = static_cast<float>(std::rand() % static_cast<int>(mapH - 64));
-        // 检测 3x3 tile 区域，避免刷在碰撞层内
-        int tx = static_cast<int>(x / tileW);
-        int ty = static_cast<int>(y / tileW);
-        if (m_gameMap->isRectColliding(static_cast<float>(tx) - 1.f,
-                                        static_cast<float>(ty) - 1.f, 3, 3)) continue;
+        if (isSpawnPosColliding(x, y, dashCheck, dashCheck)) continue;
         sf::Vector2f spawnPos(x, y);
         sf::Vector2f diff = spawnPos - m_playerPos;
         if (diff.x * diff.x + diff.y * diff.y < 200.f * 200.f) continue;
@@ -2154,10 +2194,7 @@ void Game::initEnemies() {
         ++attempts;
         float x = static_cast<float>(std::rand() % static_cast<int>(mapW - 64));
         float y = static_cast<float>(std::rand() % static_cast<int>(mapH - 64));
-        int tx = static_cast<int>(x / tileW);
-        int ty = static_cast<int>(y / tileW);
-        if (m_gameMap->isRectColliding(static_cast<float>(tx) - 1.f,
-                                        static_cast<float>(ty) - 1.f, 3, 3)) continue;
+        if (isSpawnPosColliding(x, y, bsodCheckW, bsodCheckH)) continue;
         sf::Vector2f spawnPos(x, y);
         sf::Vector2f diff = spawnPos - m_playerPos;
         if (diff.x * diff.x + diff.y * diff.y < 200.f * 200.f) continue;
@@ -2180,10 +2217,7 @@ void Game::initEnemies() {
         ++attempts;
         float x = static_cast<float>(std::rand() % static_cast<int>(mapW - 64));
         float y = static_cast<float>(std::rand() % static_cast<int>(mapH - 64));
-        int tx = static_cast<int>(x / tileW);
-        int ty = static_cast<int>(y / tileW);
-        if (m_gameMap->isRectColliding(static_cast<float>(tx) - 1.f,
-                                        static_cast<float>(ty) - 1.f, 3, 3)) continue;
+        if (isSpawnPosColliding(x, y, thiefCheck, thiefCheck)) continue;
         sf::Vector2f spawnPos(x, y);
         sf::Vector2f diff = spawnPos - m_playerPos;
         if (diff.x * diff.x + diff.y * diff.y < 200.f * 200.f) continue;
