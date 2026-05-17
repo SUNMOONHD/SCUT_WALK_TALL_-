@@ -207,8 +207,8 @@ private:
     bool         m_useSpriteTex = false; // 是否使用精灵纹理
 
     float  m_moveSpeed = 80.f;  // 追踪速度（像素/秒）
-    float  m_detectRange = 350.f; // 警戒范围
-    float  m_visionAngle = 180.f; // 视野角度（度，180表示全向）
+    float  m_detectRange = 550.f; // 警戒范围
+    float  m_visionAngle = 220.f; // 视野角度（度，220表示更宽的检测范围）
     
     AIState m_state = AIState::Idle;     // 当前状态
     float   m_idleTimer = 0.f;           // 待机计时
@@ -282,8 +282,8 @@ private:
     float      m_fleeTimer   = 0.f;    // 瞬移后恢复追踪的缓冲时间
     float      m_baseSpeed   = 0.f;    // 追踪速度（玩家速度 60%）
     float      m_fleeSpeed   = 0.f;    // 逃跑速度（玩家速度 90%）
-    float      m_detectRange = 300.f;  // 警戒范围
-    float      m_visionAngle = 90.f;   // 视野角度（度）
+    float      m_detectRange = 480.f;  // 警戒范围（增大）
+    float      m_visionAngle = 120.f;   // 视野角度（度）
     sf::Vector2f m_lastPlayerPos;      // 上一帧玩家位置（逃跑方向计算用）
     sf::Vector2f m_fleeTarget;         // 逃跑目标点
     bool         m_hasFleeTarget      = false; // 是否有逃跑目标

@@ -840,24 +840,26 @@ void Game::renderMainUI() {
         ImGuiWindowFlags_NoBackground  // 透明背景，融入古风图
     );
 
-    // 按钮宽度适配窄面板
-    const float btnW = 260 * s;
-    const float btnH = 56 * s;
+    // 按钮尺寸更大，间距更宽松
+    const float btnW = 280 * s;
+    const float btnH = 64 * s;
     const float btnX = (uiW - btnW) / 2;
+    const float btnSpacing = 16 * s;  // 按钮间距增大到16px
 
     ImGui::SetCursorPosX(btnX);
+    ImGui::SetCursorPosY(20 * s);
     if (ImGui::Button("开始游戏", { btnW, btnH })) {
         // 默认 CS 学生，直接进入游戏
         if (m_selectedCharIdx < 0) m_selectedCharIdx = 0;
         enterGameplay();
     }
-    ImGui::Dummy({ 0, 8 * s });
+    ImGui::Dummy({ 0, btnSpacing });
 
     ImGui::SetCursorPosX(btnX);
     if (ImGui::Button("角色", { btnW, btnH })) {
         m_showCharSelect = true;
     }
-    ImGui::Dummy({ 0, 8 * s });
+    ImGui::Dummy({ 0, btnSpacing });
 
     ImGui::SetCursorPosX(btnX);
     if (ImGui::Button("地图", { btnW, btnH })) {
@@ -865,7 +867,7 @@ void Game::renderMainUI() {
         m_comingFrame    = 0;
         m_comingTimer    = 0.0f;
     }
-    ImGui::Dummy({ 0, 8 * s });
+    ImGui::Dummy({ 0, btnSpacing });
 
     ImGui::SetCursorPosX(btnX);
     if (ImGui::Button("退出游戏", { btnW, btnH })) {
