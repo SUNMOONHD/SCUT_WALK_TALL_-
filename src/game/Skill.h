@@ -7,68 +7,149 @@
 
 // ============================================================
 // 技能系统 - 所有技能类的头文件
-// 技能分为两类：
-//   1. CD型技能（m_cooldownMax > 0）：有冷却时间，需要等待
+// 
+// 系统概述：
+// 游戏中的技能分为两类：
+//   1. CD型技能（m_cooldownMax > 0）：有冷却时间，需要等待充能
 //   2. 被动型技能（m_cooldownMax = 0）：持续生效，自动触发
+// 
+// 职业专属技能：
+// - 计算机学院学生（CSPlayer）：
+//   - PointerStormSkill（指针风暴）：释放指针弹幕攻击敌人
+//   - MagicCircleSkill（校徽法阵）：法阵持续伤害
+//   - KoiShieldSkill（锦鲤护盾）：锦鲤环绕保护玩家
+// 
+// - 化学学院学生（ChemPlayer）：
+//   - ExothermicStormSkill（试剂风暴）：释放试剂攻击敌人
+//   - ChemCircleSkill（分子法阵）：法阵持续伤害
+//   - ChemOrbitSkill（炼金环绕）：炼金球环绕保护玩家
+// 
+// 继承关系：
+// Skill（基类，抽象）
+//   ├── PointerStormSkill
+//   ├── MagicCircleSkill
+//   ├── KoiShieldSkill
+//   ├── ChemCircleSkill
+//   ├── ExothermicStormSkill
+//   └── ChemOrbitSkill
 // ============================================================
 
 // ============================================================
 // 技能升级选项结构体
 // ============================================================
 struct SkillUpgrade {
-    std::string label;      // 升级选项显示文本
-    std::string statName;   // 属性名称（与 applyUpgrade 对应）
+    std::string label;      // 升级选项显示文本（如"伤害 +10%"）
+    std::string statName;   // 属性名称（与 applyUpgrade 方法对应）
     float       delta;      // 属性变化量
-    int         iconId;     // 图标 ID（预留）
+    int         iconId;     // 图标 ID（预留，用于 UI 显示）
 };
 
 // ============================================================
-// 技能基类
+// 技能基类（抽象类）
+// 定义所有技能的通用属性和接口
 // 派生类必须实现：update()、render()、getUpgrades()、applyUpgrade()
 // ============================================================
 class Skill {
 public:
+    /**
+     * @brief 构造函数
+     * @param id 技能唯一标识
+     * @param name 技能名称（显示用）
+     * @param internalName 内部名称（用于资源路径）
+     * @param desc 技能描述文本
+     */
     Skill(int id, const std::string& name, const std::string& internalName,
           const std::string& desc)
         : m_id(id), m_name(name), m_internalName(internalName), m_desc(desc) {}
+    
+    /**
+     * @brief 虚析构函数
+     */
     virtual ~Skill() = default;
 
-    // 每帧调用：更新技能状态（冷却、特效、伤害判定）
+    // ============================================================
+    // 纯虚函数（派生类必须实现）
+    // ============================================================
+
+    /**
+     * @brief 更新技能状态
+     * @param dt 时间增量（秒）
+     * @param playerPos 玩家当前位置（世界坐标）
+     * @param gameCtx 游戏上下文（用于访问敌人列表等）
+     * @note 处理冷却计时、特效更新、伤害判定等
+     */
     virtual void update(float dt, const sf::Vector2f& playerPos,
                         class Game* gameCtx) = 0;
-    // 每帧调用：渲染技能特效
+    
+    /**
+     * @brief 渲染技能特效
+     * @param window 渲染窗口
+     * @param playerPos 玩家当前位置（世界坐标）
+     */
     virtual void render(sf::RenderWindow& window,
                         const sf::Vector2f& playerPos) = 0;
-    // 命中特效渲染（在敌人之上），默认空实现
+    
+    /**
+     * @brief 渲染命中特效（在敌人之上）
+     * @param window 渲染窗口
+     * @note 默认空实现，需要时派生类重写
+     */
     virtual void renderHitEffects(sf::RenderWindow& window) {}
 
-    // 获取技能基本信息
-    int    getId()     const { return m_id; }
-    int    getLevel()  const { return m_level; }
-    float  getCooldownRatio() const {
+    // ============================================================
+    // 通用方法（已实现）
+    // ============================================================
+
+    /** @return 技能唯一标识 */
+    int getId() const { return m_id; }
+    
+    /** @return 技能当前等级 */
+    int getLevel() const { return m_level; }
+    
+    /** @return 冷却进度（0~1，0 表示冷却完成） */
+    float getCooldownRatio() const {
         return (m_cooldownMax > 0.f) ? m_cooldownTimer / m_cooldownMax : 1.f;
     }
+    
+    /** @return 技能名称 */
     const std::string& getName() const { return m_name; }
+    
+    /** @return 技能描述 */
     const std::string& getDesc() const { return m_desc; }
 
-    // 获取升级选项图片路径：assets/skills/levelup/{internalName}.png
+    /**
+     * @brief 获取升级选项图片路径
+     * @return 图片路径（assets/skills/levelup/{internalName}.png）
+     */
     std::string getLevelupImagePath() const {
         return "assets/skills/levelup/" + m_internalName + ".png";
     }
 
-    // 返回本轮可选择的升级选项列表
+    /**
+     * @brief 获取本轮可选择的升级选项
+     * @return 升级选项列表（3个选项）
+     */
     virtual std::vector<SkillUpgrade> getUpgrades() const = 0;
-    // 执行升级效果
+    
+    /**
+     * @brief 执行升级效果
+     * @param statName 属性名称
+     * @param delta 属性变化量
+     */
     virtual void applyUpgrade(const std::string& statName, float delta) = 0;
 
 protected:
-    int         m_id;
-    std::string m_name;
-    std::string m_internalName;  // 内部名称（用于资源路径）
-    std::string m_desc;          // 技能描述文本
-    int         m_level = 1;    // 当前等级
-    float       m_cooldownTimer = 0.f;  // 冷却计时
-    float       m_cooldownMax   = 3.0f; // 冷却时间上限
+    // ============================================================
+    // 受保护成员变量（派生类可访问）
+    // ============================================================
+    
+    int         m_id;              // 技能唯一标识
+    std::string m_name;            // 技能名称（显示用）
+    std::string m_internalName;    // 内部名称（用于资源路径）
+    std::string m_desc;            // 技能描述文本
+    int         m_level = 1;       // 当前等级（初始为1）
+    float       m_cooldownTimer = 0.f;  // 当前冷却计时
+    float       m_cooldownMax   = 3.0f; // 冷却时间上限（秒）
 };
 
 // ============================================================
