@@ -1,0 +1,313 @@
+{
+	"station_name": "地铁综合换乘站",
+	"floors": [0, -1],
+	"nodes": [
+		{
+			"id": "ENT_A",
+			"name": "A 入口",
+			"type": "entrance",
+			"floor": 0,
+			"x": 0,
+			"y": 0,
+			"capacity": 50,
+			"width": 4.0
+		},
+		{
+			"id": "ENT_B",
+			"name": "B 入口",
+			"type": "entrance",
+			"floor": 0,
+			"x": -2,
+			"y": -5,
+			"capacity": 45,
+			"width": 3.5
+		},
+		{
+			"id": "SEC_1",
+			"name": "安检区 1",
+			"type": "security",
+			"floor": 0,
+			"x": 4,
+			"y": 0,
+			"capacity": 40,
+			"width": 3.0
+		},
+		{
+			"id": "SEC_2",
+			"name": "安检区 2",
+			"type": "security",
+			"floor": 0,
+			"x": 2,
+			"y": -5,
+			"capacity": 35,
+			"width": 2.8
+		},
+		{
+			"id": "TKT_1",
+			"name": "售票区",
+			"type": "ticket",
+			"floor": 0,
+			"x": 6,
+			"y": -3,
+			"capacity": 50,
+			"width": 3.0
+		},
+		{
+			"id": "GATE_1",
+			"name": "闸机区 A",
+			"type": "gate",
+			"floor": 0,
+			"x": 8,
+			"y": -1,
+			"capacity": 60,
+			"width": 4.0
+		},
+		{
+			"id": "GATE_2",
+			"name": "闸机区 B",
+			"type": "gate",
+			"floor": 0,
+			"x": 8,
+			"y": -5,
+			"capacity": 55,
+			"width": 3.5
+		},
+		{
+			"id": "HALL_1",
+			"name": "主站厅",
+			"type": "hall",
+			"floor": 0,
+			"x": 12,
+			"y": 0,
+			"capacity": 120,
+			"width": 8.0
+		},
+		{
+			"id": "HALL_2",
+			"name": "换乘厅",
+			"type": "hall",
+			"floor": 0,
+			"x": 16,
+			"y": -4,
+			"capacity": 100,
+			"width": 7.0
+		},
+		{
+			"id": "CORR_1",
+			"name": "主走廊",
+			"type": "corridor",
+			"floor": 0,
+			"x": 14,
+			"y": -1,
+			"capacity": 80,
+			"width": 5.0
+		},
+		{
+			"id": "ESC_1",
+			"name": "扶梯 1（下行）",
+			"type": "escalator",
+			"floor": 0,
+			"x": 12,
+			"y": -6,
+			"capacity": 40,
+			"width": 2.5
+		},
+		{
+			"id": "ESC_2",
+			"name": "扶梯 2（下行）",
+			"type": "escalator",
+			"floor": 0,
+			"x": 16,
+			"y": -8,
+			"capacity": 40,
+			"width": 2.5
+		},
+		{
+			"id": "STAIR_1",
+			"name": "楼梯",
+			"type": "stairs",
+			"floor": 0,
+			"x": 14,
+			"y": -7,
+			"capacity": 50,
+			"width": 3.0
+		},
+		{
+			"id": "EXT_A",
+			"name": "A 出口",
+			"type": "exit",
+			"floor": 0,
+			"x": 22,
+			"y": -2,
+			"capacity": 55,
+			"width": 3.8
+		},
+		{
+			"id": "EXT_B",
+			"name": "B 出口",
+			"type": "exit",
+			"floor": 0,
+			"x": 20,
+			"y": 2,
+			"capacity": 60,
+			"width": 4.0
+		},
+		{
+			"id": "WAIT_1",
+			"name": "1号候车区",
+			"type": "waiting",
+			"floor": -1,
+			"x": 12,
+			"y": -12,
+			"capacity": 150,
+			"width": 8.0
+		},
+		{
+			"id": "WAIT_2",
+			"name": "2号候车区",
+			"type": "waiting",
+			"floor": -1,
+			"x": 18,
+			"y": -12,
+			"capacity": 140,
+			"width": 7.5
+		},
+		{
+			"id": "PLAT_1",
+			"name": "1号线站台",
+			"type": "platform",
+			"floor": -1,
+			"x": 10,
+			"y": -16,
+			"capacity": 200,
+			"width": 10.0
+		},
+		{
+			"id": "PLAT_2",
+			"name": "2号线站台",
+			"type": "platform",
+			"floor": -1,
+			"x": 18,
+			"y": -16,
+			"capacity": 180,
+			"width": 9.0
+		}
+	],
+	"edges": [
+		{
+			"from": "ENT_A", "to": "SEC_1",
+			"length": 5.0, "width": 3.5, "capacity": 4.8,
+			"line_index": 1, "bidirectional": true, "transfer_time": 4.5
+		},
+		{
+			"from": "ENT_B", "to": "SEC_2",
+			"length": 4.5, "width": 3.2, "capacity": 4.2,
+			"line_index": 2, "bidirectional": true, "transfer_time": 4.0
+		},
+		{
+			"from": "SEC_1", "to": "TKT_1",
+			"length": 4.0, "width": 3.0, "capacity": 4.0,
+			"line_index": 1, "bidirectional": true, "transfer_time": 3.5
+		},
+		{
+			"from": "SEC_2", "to": "TKT_1",
+			"length": 5.0, "width": 3.0, "capacity": 4.0,
+			"line_index": 2, "bidirectional": true, "transfer_time": 4.5
+		},
+		{
+			"from": "TKT_1", "to": "GATE_1",
+			"length": 3.0, "width": 3.5, "capacity": 5.0,
+			"line_index": 1, "bidirectional": true, "transfer_time": 2.5
+		},
+		{
+			"from": "TKT_1", "to": "GATE_2",
+			"length": 3.5, "width": 3.2, "capacity": 4.5,
+			"line_index": 2, "bidirectional": true, "transfer_time": 3.0
+		},
+		{
+			"from": "GATE_1", "to": "HALL_1",
+			"length": 4.0, "width": 4.0, "capacity": 6.0,
+			"line_index": 1, "bidirectional": true, "transfer_time": 3.5
+		},
+		{
+			"from": "GATE_2", "to": "HALL_2",
+			"length": 5.0, "width": 3.5, "capacity": 5.0,
+			"line_index": 2, "bidirectional": true, "transfer_time": 4.5
+		},
+		{
+			"from": "HALL_1", "to": "CORR_1",
+			"length": 3.0, "width": 5.0, "capacity": 7.0,
+			"line_index": 1, "bidirectional": true, "transfer_time": 2.0
+		},
+		{
+			"from": "CORR_1", "to": "HALL_2",
+			"length": 4.0, "width": 4.5, "capacity": 6.5,
+			"line_index": 2, "bidirectional": true, "transfer_time": 3.0
+		},
+		{
+			"from": "HALL_1", "to": "ESC_1",
+			"length": 6.0, "width": 2.5, "capacity": 3.5,
+			"line_index": 1, "bidirectional": true, "transfer_time": 8.0
+		},
+		{
+			"from": "HALL_2", "to": "ESC_2",
+			"length": 5.0, "width": 2.5, "capacity": 3.5,
+			"line_index": 2, "bidirectional": true, "transfer_time": 7.0
+		},
+		{
+			"from": "HALL_1", "to": "STAIR_1",
+			"length": 5.0, "width": 3.0, "capacity": 4.0,
+			"line_index": 1, "bidirectional": true, "transfer_time": 6.0
+		},
+		{
+			"from": "HALL_2", "to": "STAIR_1",
+			"length": 4.0, "width": 3.0, "capacity": 4.0,
+			"line_index": 2, "bidirectional": true, "transfer_time": 5.0
+		},
+		{
+			"from": "ESC_1", "to": "WAIT_1",
+			"length": 8.0, "width": 2.5, "capacity": 3.5,
+			"line_index": 1, "bidirectional": true, "transfer_time": 10.0
+		},
+		{
+			"from": "ESC_2", "to": "WAIT_2",
+			"length": 7.0, "width": 2.5, "capacity": 3.5,
+			"line_index": 2, "bidirectional": true, "transfer_time": 9.0
+		},
+		{
+			"from": "STAIR_1", "to": "WAIT_1",
+			"length": 7.0, "width": 3.0, "capacity": 4.0,
+			"line_index": 1, "bidirectional": true, "transfer_time": 8.0
+		},
+		{
+			"from": "STAIR_1", "to": "WAIT_2",
+			"length": 6.0, "width": 3.0, "capacity": 4.0,
+			"line_index": 2, "bidirectional": true, "transfer_time": 7.0
+		},
+		{
+			"from": "WAIT_1", "to": "PLAT_1",
+			"length": 5.0, "width": 6.0, "capacity": 8.0,
+			"line_index": 1, "bidirectional": true, "transfer_time": 4.0
+		},
+		{
+			"from": "WAIT_2", "to": "PLAT_2",
+			"length": 5.0, "width": 5.5, "capacity": 7.5,
+			"line_index": 2, "bidirectional": true, "transfer_time": 4.0
+		},
+		{
+			"from": "PLAT_1", "to": "PLAT_2",
+			"length": 12.0, "width": 3.5, "capacity": 4.5,
+			"line_index": 2, "bidirectional": true, "transfer_time": 10.0
+		},
+		{
+			"from": "HALL_1", "to": "EXT_B",
+			"length": 8.0, "width": 4.0, "capacity": 6.0,
+			"line_index": 1, "bidirectional": true, "transfer_time": 7.0
+		},
+		{
+			"from": "HALL_2", "to": "EXT_A",
+			"length": 7.0, "width": 3.5, "capacity": 5.0,
+			"line_index": 2, "bidirectional": true, "transfer_time": 6.0
+		}
+	]
+}

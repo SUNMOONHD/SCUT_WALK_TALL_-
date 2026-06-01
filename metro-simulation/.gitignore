@@ -1,0 +1,111 @@
+# ========== 构建产物 ==========
+build/
+build_release/
+build-gui-mingw/
+cmake-build-*/
+*.cmake/
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+Makefile
+*.make
+compile_commands.json
+CTestTestfile.cmake
+Testing/
+*.sln
+*.vcxproj
+*.vcxproj.filters
+*.recipe
+*.tlog
+
+# ========== Qt Creator ==========
+.qtcreator/
+*.autosave
+qtvcpkg/
+
+# ========== Qt/MinGW 生成物 ==========
+*.moc
+*.rcc
+*.uic
+*.obj
+*.o
+*.a
+*.lib
+*.exp
+*.pdb
+*.ilk
+*.idb
+*.pch/
+moc_*.cpp
+qrc_*.cpp
+ui_*.h
+
+# ========== 可执行文件 ==========
+# 平台通用的可执行文件后缀（保留无后缀的可执行文件本身）
+*.exe
+*.dll
+*.so
+*.dylib
+*.app
+
+# ========== 输出目录 ==========
+bin/
+output/
+x64/
+lib/
+
+# ========== IDE ==========
+# Visual Studio
+.vs/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+*.vcxproj.filters
+
+# VS Code
+.vscode/
+
+# CLion
+.idea/
+*.iws
+*.iml
+
+# KDevelop
+*.kdev4
+
+# Eclipse
+.cproject
+.project
+.settings/
+
+# XCode
+*.xcodeproj/
+*.xcworkspace/
+
+# NetBeans
+nbproject/
+
+# ========== 操作系统 ==========
+.DS_Store
+Thumbs.db
+desktop.ini
+$RECYCLE.BIN/
+
+# ========== 临时文件 ==========
+*.tmp
+*.log
+*.bak
+*.swp
+*~
+
+# ========== 仿真结果（不提交） ==========
+data/results/*.csv
+data/results/*.json
+!data/results/.gitkeep
+
+# ========== 第三方库源码（按需） ==========
+# lib/ 下各库自身的内容不提交，按需保留或用 git submodule
+lib/Qt-Advanced-Docking-System-4.2.1/
+lib/qcustomplot/
+lib/spin-widgets/

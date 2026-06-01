@@ -1,0 +1,20 @@
+{
+  "time_step": 1,
+  "peak_lambda": 80,
+  "offpeak_lambda": 130,
+  "peak_hours": [[7, 10], [17, 20]],
+  "max_patience": 240,
+  "base_speed": 1.1,
+  "congestion_threshold": 0.62,
+  "congestion_k": 0.72,
+  "burst_mean": 30,
+  "burst_stddev": 10,
+  "security_time": 3,
+  "ticket_time_base": 6,
+  "gate_time": 1,
+  "boarding_time": 2,
+  "train_headway": 40,
+  "train_capacity": 180,
+  "entry_dwell_time": 3,
+  "exit_dwell_time": 3
+}

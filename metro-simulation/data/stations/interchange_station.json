@@ -1,0 +1,113 @@
+{
+  "station_name": "Interchange Demo Station",
+  "floors": [0, -1, -2],
+  "nodes": [
+    {
+      "id": "ENT_N",
+      "name": "North Entrance",
+      "type": "entrance",
+      "floor": 0,
+      "x": -6,
+      "y": 0,
+      "capacity": 80,
+      "width": 5.0
+    },
+    {
+      "id": "HALL_0",
+      "name": "Concourse",
+      "type": "hall",
+      "floor": 0,
+      "x": 4,
+      "y": 0,
+      "capacity": 200,
+      "width": 10.0
+    },
+    {
+      "id": "STAIR_D1",
+      "name": "Down Stairs 1",
+      "type": "stairs",
+      "floor": 0,
+      "x": 10,
+      "y": -3,
+      "capacity": 40,
+      "width": 2.5
+    },
+    {
+      "id": "PLAT_L1",
+      "name": "Line 1 Platform",
+      "type": "platform",
+      "floor": -1,
+      "x": 12,
+      "y": -10,
+      "capacity": 260,
+      "width": 10.0
+    },
+    {
+      "id": "PLAT_L2",
+      "name": "Line 2 Platform",
+      "type": "platform",
+      "floor": -2,
+      "x": 18,
+      "y": -18,
+      "capacity": 300,
+      "width": 11.0
+    },
+    {
+      "id": "EXT_S",
+      "name": "South Exit",
+      "type": "exit",
+      "floor": 0,
+      "x": 20,
+      "y": 0,
+      "capacity": 70,
+      "width": 4.0
+    }
+  ],
+  "edges": [
+    {
+      "from": "ENT_N",
+      "to": "HALL_0",
+      "length": 11,
+      "width": 4.5,
+      "capacity": 6.8,
+      "bidirectional": true,
+      "transfer_time": 9.5
+    },
+    {
+      "from": "HALL_0",
+      "to": "STAIR_D1",
+      "length": 7,
+      "width": 2.5,
+      "capacity": 3.5,
+      "bidirectional": true,
+      "transfer_time": 7
+    },
+    {
+      "from": "STAIR_D1",
+      "to": "PLAT_L1",
+      "length": 9,
+      "width": 2.3,
+      "capacity": 2.8,
+      "bidirectional": true,
+      "transfer_time": 10
+    },
+    {
+      "from": "PLAT_L1",
+      "to": "PLAT_L2",
+      "length": 12,
+      "width": 2.2,
+      "capacity": 2.5,
+      "bidirectional": true,
+      "transfer_time": 13
+    },
+    {
+      "from": "HALL_0",
+      "to": "EXT_S",
+      "length": 16,
+      "width": 4.0,
+      "capacity": 5.5,
+      "bidirectional": true,
+      "transfer_time": 14
+    }
+  ]
+}
