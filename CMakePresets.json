@@ -16,6 +16,28 @@
                 "strategy": "set"
             },
             "binaryDir": "${sourceDir}/build"
+        },
+        {
+            "name": "kunpeng-release",
+            "displayName": "Kunpeng ARM64 Release",
+            "description": "Build for Huawei Kunpeng ARM64 servers (Linux)",
+            "toolchainFile": "${sourceDir}/cmake/kunpeng_arm64_toolchain.cmake",
+            "binaryDir": "${sourceDir}/build-kunpeng",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Release",
+                "CMAKE_VERBOSE_MAKEFILE": "ON"
+            }
+        },
+        {
+            "name": "kunpeng-debug",
+            "displayName": "Kunpeng ARM64 Debug",
+            "description": "Debug build for Huawei Kunpeng ARM64 servers (Linux)",
+            "toolchainFile": "${sourceDir}/cmake/kunpeng_arm64_toolchain.cmake",
+            "binaryDir": "${sourceDir}/build-kunpeng-debug",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Debug",
+                "CMAKE_VERBOSE_MAKEFILE": "ON"
+            }
         }
     ],
     "buildPresets": [
@@ -28,6 +50,16 @@
             "name": "release",
             "configurePreset": "default",
             "configuration": "Release"
+        },
+        {
+            "name": "kunpeng-release",
+            "configurePreset": "kunpeng-release",
+            "configuration": "Release"
+        },
+        {
+            "name": "kunpeng-debug",
+            "configurePreset": "kunpeng-debug",
+            "configuration": "Debug"
         }
     ]
 }

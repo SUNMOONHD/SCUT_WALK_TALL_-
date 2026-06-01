@@ -14,7 +14,13 @@ set(IMGUI_SFML_DIR "${THIRD_PARTY_DIR}/imgui-sfml")
 set(PUGIXML_DIR    "${THIRD_PARTY_DIR}/pugixml")
 
 # ========== Find SFML ==========
-find_package(SFML 3 COMPONENTS Graphics Window System Audio REQUIRED)
+if(WIN32)
+    set(SFML_DIR "${THIRD_PARTY_DIR}/SFML/lib/cmake/SFML")
+    find_package(SFML 3 COMPONENTS Graphics Window System Audio REQUIRED)
+else()
+    find_package(PkgConfig REQUIRED)
+    pkg_check_modules(SFML REQUIRED sfml-graphics sfml-window sfml-system sfml-audio)
+endif()
 
 # ========== ImGui Core Sources ==========
 set(IMGUI_SOURCES
@@ -51,14 +57,25 @@ set(GAME_SOURCES
 add_executable(${PROJECT_NAME} ${GAME_SOURCES} ${IMGUI_SOURCES} ${IMGUI_SFML_SOURCES})
 
 # ========== Include Directories ==========
-target_include_directories(${PROJECT_NAME} PRIVATE
-    ${SFML_DIR}/../../include
-    ${IMGUI_DIR}
-    ${IMGUI_SFML_DIR}
-    ${PUGIXML_DIR}
-    src
-    include
-)
+if(WIN32)
+    target_include_directories(${PROJECT_NAME} PRIVATE
+        ${SFML_DIR}/../../include
+        ${IMGUI_DIR}
+        ${IMGUI_SFML_DIR}
+        ${PUGIXML_DIR}
+        src
+        include
+    )
+else()
+    target_include_directories(${PROJECT_NAME} PRIVATE
+        ${SFML_INCLUDE_DIRS}
+        ${IMGUI_DIR}
+        ${IMGUI_SFML_DIR}
+        ${PUGIXML_DIR}
+        src
+        include
+    )
+endif()
 
 # ========== Preprocessor Definitions ==========
 target_compile_definitions(${PROJECT_NAME} PRIVATE
@@ -73,13 +90,24 @@ if(MSVC)
 endif()
 
 # ========== Link Libraries ==========
-target_link_libraries(${PROJECT_NAME} PRIVATE
-    SFML::Graphics
-    SFML::Window
-    SFML::System
-    SFML::Audio
-    opengl32
-)
+if(WIN32)
+    target_link_libraries(${PROJECT_NAME} PRIVATE
+        SFML::Graphics
+        SFML::Window
+        SFML::System
+        SFML::Audio
+        opengl32
+    )
+else()
+    target_link_libraries(${PROJECT_NAME} PRIVATE
+        sfml-graphics
+        sfml-window
+        sfml-system
+        sfml-audio
+        GL
+        pthread
+    )
+endif()
 
 # ========== Hide Console Window on Windows ==========
 if(WIN32)
@@ -90,13 +118,15 @@ if(WIN32)
     endif()
 endif()
 
-# ========== Copy SFML DLLs to Output (Post-Build) ==========
-add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy_directory
-        "${THIRD_PARTY_DIR}/SFML/bin"
-        $<TARGET_FILE_DIR:${PROJECT_NAME}>
-    COMMENT "Copying SFML DLLs to output directory..."
-)
+# ========== Copy SFML DLLs to Output (Post-Build, Windows Only) ==========
+if(WIN32)
+    add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy_directory
+            "${THIRD_PARTY_DIR}/SFML/bin"
+            $<TARGET_FILE_DIR:${PROJECT_NAME}>
+        COMMENT "Copying SFML DLLs to output directory..."
+    )
+endif()
 
 # ========== Copy Assets to Output (Post-Build) ==========
 add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
